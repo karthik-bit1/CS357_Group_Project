@@ -12,4 +12,4 @@ Project Lead: Holding with the project management and working through research a
 Scrum Lead: Scheduling meeting times and delegating how much of the project we work on. Setup Discord meetings if we cannot meet in person. (Jkhari)
 Code Lead: Do check on the software, test cases, making the module not deviating from the game and making sure the AI is compatible and considering ethical norms.(Karthik)
 
-Meeting schedules for stand-ups and tracking are Mondays, Wednesdays: 1:00 pm to 3:30 pm.
+Meeting schedules for stand-ups and tracking are Mondays, Wednesdays: 1:00 pm to 4 pm.
