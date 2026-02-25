@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Requirements
-permalink: /Proposal/Requirements.md
+permalink: /Proposal/Requirements/
 ---
 
 # Campus Event Registration System
