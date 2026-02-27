@@ -4,11 +4,13 @@ title: Requirements
 permalink: /Proposal/Requirements/
 ---
 # Reverse Turing test
-**Course:** CS375.
+
+**Course:** cs.
 **Team:** Karthik Reddy Akkala, Jkhari James Harris, Samuel Nevin Boger.
 **Version:** v.
 **Last Updated:** February 26, 2026.
 ---
+
 # 1. Overview
 
 ## 1.1 Purpose
