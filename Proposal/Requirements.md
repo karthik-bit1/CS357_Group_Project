@@ -5,10 +5,11 @@ permalink: /Proposal/Requirements/
 ---
 # Reverse Turing test
 
-**Course:** cs.
-**Team:** Karthik Reddy Akkala, Jkhari James Harris, Samuel Nevin Boger.
-**Version:** v.
-**Last Updated:** February 26, 2026.
+**Course:** CS375  
+**Team:** karthik reddy akkala, Jkhari james harris, Samuel nevin boger.
+**Version:** v  
+**Last Updated:** February 26, 2026
+
 ---
 
 # 1. Overview
