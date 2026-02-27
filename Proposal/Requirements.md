@@ -7,7 +7,8 @@ permalink: /Proposal/Requirements/
 
 **Course:** CS375  
 **Team:** karthik reddy akkala, Jkhari james harris, Samuel nevin boger.
-**Version:** v  
+
+**Version:** v .
 **Last Updated:** February 26, 2026
 
 ---
