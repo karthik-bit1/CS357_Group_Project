@@ -36,4 +36,4 @@ permalink: /Proposal/Requirements/
 ## Voting System :
 - After each round all players will vote to choose who will be out in the next round
 ## Rounds System (A randomized question posed each round):
-- At the beginning of the game a list of questions for everyone to aswer. After all asnwers are given and displayed, the players must vote who they think is the human. If the AI's has ,more the human,s the human wins the game.
+- At the beginning of the game a list of questions for everyone to aswer. After all answers are given and displayed, the players must vote who they think is the human. If the AI's has ,more the human,s the human wins the game.
