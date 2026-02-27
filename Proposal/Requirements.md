@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: pages
 title: Requirements
 permalink: /Proposal/Requirements/
 ---
