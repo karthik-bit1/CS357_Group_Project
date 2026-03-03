@@ -48,20 +48,22 @@ permalink: /Proposal/Requirements/
 
 # 5. User Stories
   ## Club Member Story :
-  -- As a games club member, I want the game to be interactive and entertaining.
-  -- As a games club member, I want the game to be fun.
+  - As a games club member, I want the game to be interactive and entertaining.
+  - As a games club member, I want the game to be fun.
   ## Professor Story :
-  -- As a professor, I would want the questions to be educational to the user.
+  - As a professor, I would want the questions to be educational to the user.
 
 # 6. Acceptance Critera
   ## Play a round
-  -- Quetions being asked to all players
-  -- 4 AI's answering promtps including the human response
-  -- Voting who is the human
-  -- Player wins or loses
+  - Quetions being asked to all players
+  - 4 AI's answering promtps including the human response
+  - Voting who is the human
+  - Player wins or loses
 
 # 7. Gantt Chart
+The following Gantt chart outlines the projected development schedule for the semester.
 
+![Gantt Chart](/Group_Project/images/Ghanttchat.png)
 
 
 
