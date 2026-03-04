@@ -45,6 +45,7 @@ permalink: /Proposal/Requirements/
 # 4. Non Functional Requirements
 ## Acting
   - Allow AI to appear to be thinking about the answer
+  - Give the AI "personality traits" so that they have something to work off of.
 ## Multiplayer
   - The ability to have multiple human players against multiple AIs.
 ## Usability
