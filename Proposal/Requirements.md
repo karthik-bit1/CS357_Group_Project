@@ -6,7 +6,7 @@ permalink: /Proposal/Requirements/
 # Reverse Turing test
 
 **Course:** CS375  
-**Team:** karthik reddy akkala, Jkhari james harris, Samuel nevin boger.
+**Team:** Karthik Reddy Akkala, Jkhari James Harris, Samuel Nevin Boger.
 **Version:** v.
 **Last Updated:** February 26, 2026.
 
@@ -24,7 +24,7 @@ permalink: /Proposal/Requirements/
 
 | Stakeholder               | Role            | Goals                                   |
 | ------------------------- | --------------- | --------------------------------------- |
-| Game Club Member          | Game stands     | Keep it entertaininng for and playable     |
+| Game Club Member          | Game stands     | Keep it entertaining for and playable     |
 | Professor                 | Educational     | To create interactive experience with AI |
 
 ---
