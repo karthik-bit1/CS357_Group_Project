@@ -31,7 +31,7 @@ permalink: /Proposal/Requirements/
 
 # 3. Functional Requirements
 
-## 3.1 Game states:
+# 3.1 Game states: (Game functionality)
 ## 3.1.a Win/Lose State (Human wins or AI Wins):
 - When the human gets voted out or all AI or voted out, the game initiates the Win/Loss condition
 ## 3.1.b Voting State :
