@@ -32,26 +32,32 @@ permalink: /Proposal/Requirements/
 # 3. Functional Requirements
 
 ## Game states:
-## Win/Lose condition (Human wins or AI Wins):
+## Win/Lose State (Human wins or AI Wins):
 - When the human gets voted out or all AI or voted out, the game initiates the Win/Loss condition
-## Voting System :
+## Voting State :
 - After each round all players will vote to choose who will be out in the next round
-## Rounds System (A randomized question posed each round):
+## Rounds State (A randomized question posed each round):
 - At the beginning of the game a list of questions for everyone to answer. After all answers are given and displayed, the players must vote who they think is the human. If the AI's has ,more the humans the human wins the game.
+## Character Limit :
+- The Human and AIs have a character limit of 255.
+- The AIs have a word limit of 30.
 
 # 4. Non Functional Requirements
-## Performance
-  - Minimum of 255 character limit per answer
-  - Allow AI to have thought processing time
+## Acting
+  - Allow AI to appear to be thinking about the answer
+## Multiplayer
+  - The ability to have multiple human players against multiple AIs.
 ## Usability
   - Web based interface
+  - Clean and clear UI design
 
 # 5. User Stories
 ## Club Member Story :
   - As a games club member, I want the game to be interactive and entertaining.
-  - As a games club member, I want the game to be fun.
+  - As a games club member, I want the AIs to react quickly.
   ## Professor Story :
   - As a professor, I would want the questions to be educational to the user.
+  - As a professor, I would like there to be an educational stance in the game.
 
 # 6. Acceptance Criteria
 ## Play a round
