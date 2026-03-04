@@ -56,6 +56,7 @@ permalink: /Proposal/Requirements/
 ## Club Member Story :
   - As a games club member, I want the game to be interactive and entertaining.
   - As a games club member, I want the AIs to react quickly.
+  - As a gmaes club member, I would want an easy to read UI system.
 ## Professor Story :
   - As a professor, I would want the questions to be educational to the user.
   - As a professor, I would like there to be an educational stance in the game.
