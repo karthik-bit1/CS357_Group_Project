@@ -31,22 +31,21 @@ permalink: /Proposal/Requirements/
 
 # 3. Functional Requirements
 
-# 3.1 Game states: (Game functionality)
+# Game states: (Game functionality)
 
-## 3.1.a Win/Lose State (Human wins or AI Wins):
+## Win/Lose State (Human wins or AI Wins):
 - When the human gets voted out or all AI or voted out, the game initiates the Win/Loss condition
-## 3.1.b Voting State :
+## Voting State :
 - After each round all players will vote to choose who will be out in the next round
-## 3.1.c Rounds State (A randomized question posed each round):
+## Rounds State (A randomized question posed each round):
 - At the beginning of the game a list of questions for everyone to answer. After all answers are given and displayed, the players must vote who they think is the human. If the AI's has ,more the humans the human wins the game.
-# 3.2 Character Limit :
+# Character Limit :
 - The Human and AIs have a character limit of 255.
 - The AIs have a word limit of 30.
+ ## Acting
+  - Allow AI to appear to be thinking about the answer
 
 # 4. Non Functional Requirements
-
-## Acting
-  - Allow AI to appear to be thinking about the answer
   - Give the AI "personality traits" so that they have something to work off of.
 ## Multiplayer
   - The ability to have multiple human players against multiple AIs.
@@ -67,10 +66,14 @@ permalink: /Proposal/Requirements/
 # 6. Acceptance Criteria
 
 ## Play a round
-  - Questions being asked to all players
-  - 4 AI's answering prompts including the human response
-  - Voting who is the human
-  - Player wins or loses
+  - System initializes when the user starts the game
+  - The AI will be given a random personailty trait prior to the beginning of the round
+  - The system assigns each player a randomly generated name at the start of the game
+  - A question is asked, from a list of random questions, to all players
+  - 4 AI's will answer the prompts along with the human response
+  - Voting round begins after all answers have been given, the players must then decide who is the human
+  - Player wins if the Ai if voted out, player loses if they are voted out
+  - Game will end and will loop back to the beginning where everything is randomized
 
 # 7. Gantt Chart
 The following Gantt chart outlines the projected development schedule for the semester.
