@@ -56,6 +56,8 @@ permalink: /Proposal/Requirements/
 # 5. User Stories
 
 ## Club Member Story :
+  - As a games club member, I would expect the game to start when I press start button.
+  - As a games club member, I would like to know how to play before the round begins.
   - As a games club member, I want the game to be interactive and entertaining.
   - As a games club member, I want the AIs to react quickly.
   - As a gmaes club member, I would want an easy to read UI system.
