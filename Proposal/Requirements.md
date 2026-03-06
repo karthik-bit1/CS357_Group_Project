@@ -22,26 +22,17 @@ permalink: /Proposal/Requirements/
 
 # 2. Stakeholders
 
-| Stakeholder               | Role            | Goals                                   |
-| ------------------------- | --------------- | --------------------------------------- |
-| Game Club Member          | Game stands     | Keep it entertaining for and playable   |
-| Professor                 | Educational     | To create interactive experience with AI|
-
-| Stakeholder questions                                                     | Game Club Member   | Professor  |
-| ------------------------------------------------------------------------- | ------------------ | ---------- |
-| Do you have any questions for us?                                         |                    |            |
-| Have you ever talked to an AI?                                            |                    |            |
-| Which AI models do you tend to use (ie ChatGPT, Gemini, Claude, etc)?     |                    |            |
-| What experiences do you have chatting with AI in general?                 |                    |            |
-| How can you detect AI generated writing?                                  |                    |            |
-| Have you ever used generative AI for entertainment purposes?              |                    |            |
-| What’s your experience with social deduction games?                       |                    |            |
-| What is the speed at which you wish for the AI to react to questions?     |                    |            |
-| What kind of questions would you expect the AI to ask?                    |                    |            |
-| How well do you think this game/project could help one detect AI writing? |                    |            |
-| Do you have any questions for us?                                         |                    |            |
-
----
+| Stakeholder questions                                                     | Game Club Member                                         | Professor   |
+| ------------------------------------------------------------------------- | ------------------------------------------------------   | ----------- |
+| Have you ever talked to an AI? (chatting with AI)                         | Yes, chat with simple text like in general.              |             |
+| Which AI models do you tend to use (ie ChatGPT, Gemini, Claude, etc)?     | ChatGPT, Gemini.                                         |             |
+| What experiences do you have chatting with AI in general?                 | Asking random questions, looping it.                     |             |
+| How can you detect AI generated writing?                                  | Very verbose.                                            |             |
+| Have you ever used generative AI for entertainment purposes?              | Roleplaying.                                             |             |
+| What’s your experience with social deduction games?                       | Amoung Us, secret hitler.                                |             |
+| What is the speed at which you wish for the AI to react to questions?     | It doesn't matter untill it gives message as fast can be.|             |
+| What kind of questions can be asked to equally eliminate human from game  | Questions on the human experience.                       |             |
+| Do you have any questions for us?                                         | How is the interface going be (we mentioned chat based)  |             |
 
 # 3. Functional Requirements
 
