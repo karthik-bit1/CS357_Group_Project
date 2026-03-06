@@ -24,8 +24,22 @@ permalink: /Proposal/Requirements/
 
 | Stakeholder               | Role            | Goals                                   |
 | ------------------------- | --------------- | --------------------------------------- |
-| Game Club Member          | Game stands     | Keep it entertaining for and playable     |
-| Professor                 | Educational     | To create interactive experience with AI |
+| Game Club Member          | Game stands     | Keep it entertaining for and playable   |
+| Professor                 | Educational     | To create interactive experience with AI|
+
+| Stakeholder questions                                                     | Game Club Member   | Professor  |
+| ------------------------------------------------------------------------- | ------------------ | ---------- |
+| Do you have any questions for us?                                         |                    |            |
+| Have you ever talked to an AI?                                            |                    |            |
+| Which AI models do you tend to use (ie ChatGPT, Gemini, Claude, etc)?     |                    |            |
+| What experiences do you have chatting with AI in general?                 |                    |            |
+| How can you detect AI generated writing?                                  |                    |            |
+| Have you ever used generative AI for entertainment purposes?              |                    |            |
+| What’s your experience with social deduction games?                       |                    |            |
+| What is the speed at which you wish for the AI to react to questions?     |                    |            |
+| What kind of questions would you expect the AI to ask?                    |                    |            |
+| How well do you think this game/project could help one detect AI writing? |                    |            |
+| Do you have any questions for us?                                         |                    |            |
 
 ---
 
