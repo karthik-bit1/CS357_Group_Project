@@ -40,7 +40,7 @@ permalink: /Proposal/Requirements/
   - All of the players will be given a randomly generated name from a list of names
   - The AI will be given a random personality from a list of random personalities
   - The user will be prompted with a random question from a list of questions
-  - The user's response will be 255 characters long (30 words
+  - The user's response will be 255 characters long (30 words)
   - Their answer will be displayed along with the AI's responses
   - The voting phase will begin and the players must select the answer they think is the human response
   - The player with the most votes against them is voted out of the round and the remaining players move on to the next round
@@ -48,8 +48,7 @@ permalink: /Proposal/Requirements/
   - After the user finishes the game, they will have the option to hit play again and the system will loop to the beginning.
 
 # 4. Non Functional Requirements
-  - Give the AI "personality traits" so that they have something to work off of.
-## Multiplayer
+  - Multiplayer
   - The ability to have multiple human players against multiple AIs.
 ## Usability
   - Web based interface
