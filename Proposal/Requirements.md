@@ -50,6 +50,8 @@ permalink: /Proposal/Requirements/
 # 4. Non Functional Requirements
   - Multiplayer
   - The ability to have multiple human players against multiple AIs.
+  - More rounds (possibly 5)
+  - Fast AI responses
 ## Usability
   - Web based interface
   - Clean and clear UI design
