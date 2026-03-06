@@ -29,7 +29,7 @@ permalink: /Proposal/Requirements/
 | What experiences do you have chatting with AI in general?                 | Asking random questions, looping it.                     |             |
 | How can you detect AI generated writing?                                  | Very verbose.                                            |             |
 | Have you ever used generative AI for entertainment purposes?              | Roleplaying.                                             |             |
-| What’s your experience with social deduction games?                       | Amoung Us, secret hitler.                                |             |
+| What’s your experience with social deduction games?                       | Among Us, Secret Hitler.                                |             |
 | What is the speed at which you wish for the AI to react to questions?     | It doesn't matter untill it gives message as fast can be.|             |
 | What kind of questions can be asked to equally eliminate human from game  | Questions on the human experience.                       |             |
 | Do you have any questions for us?                                         | How is the interface going be (we mentioned chat based)  |             |
