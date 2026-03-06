@@ -35,20 +35,17 @@ permalink: /Proposal/Requirements/
 | Do you have any questions for us?                                         | How is the interface going be (we mentioned chat based)  |             |
 
 # 3. Functional Requirements
-
-# Game states: (Game functionality)
-
-## Win/Lose State (Human wins or AI Wins):
-- When the human gets voted out or all AI or voted out, the game initiates the Win/Loss condition
-## Voting State :
-- After each round all players will vote to choose who will be out in the next round
-## Rounds State (A randomized question posed each round):
-- At the beginning of the game a list of questions for everyone to answer. After all answers are given and displayed, the players must vote who they think is the human. If the AI's has ,more the humans the human wins the game.
-# Character Limit :
-- The Human and AIs have a character limit of 255.
-- The AIs have a word limit of 30.
- ## Acting
-  - Allow AI to appear to be thinking about the answer
+  - User will be presented with the rules of the game prior to the start of the round
+  - Once the start button is selected, system will initialize the first round
+  - All of the players will be given a randomly generated name from a list of names
+  - The AI will be given a random personality from a list of random personalities
+  - The user will be prompted with a random question from a list of questions
+  - The user's response will be 255 characters long (30 words
+  - Their answer will be displayed along with the AI's responses
+  - The voting phase will begin and the players must select the answer they think is the human response
+  - The player with the most votes against them is voted out of the round and the remaining players move on to the next round
+  - This will repeat until all of the AI are voted out or the human is voted out of the game
+  - After the user finishes the game, they will have the option to hit play again and the system will loop to the beginning.
 
 # 4. Non Functional Requirements
   - Give the AI "personality traits" so that they have something to work off of.
