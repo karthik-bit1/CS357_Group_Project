@@ -16,21 +16,21 @@ permalink: /Proposal/Requirements/
 
 ## 1.1 Purpose
 
-** Providing entertaining software for individual to understand and play with AI text. And to be able to write prompt that can manipulate AI in detecting human text.
+** Providing entertaining software for individual to understand and play with AI text. And to be able to write prompt that can manipulate AI in detecting human text. **
 
 ---
 
 # 2. Stakeholders
 
-| Stakeholder questions                                                     | Game Club Member                                         | Professor   |
-| ------------------------------------------------------------------------- | ------------------------------------------------------   | ----------- |
-| Have you ever talked to an AI? (chatting with AI)                         | Yes, chat with simple text like in general.              |             |
-| Which AI models do you tend to use (ie ChatGPT, Gemini, Claude, etc)?     | ChatGPT, Gemini.                                         |             |
-| What experiences do you have chatting with AI in general?                 | Asking random questions, looping it.                     |             |
+| Stakeholder questions                                                     | Game Club Member                                         | Professor                                                               |
+| ------------------------------------------------------------------------- | -------------------------------------------------------- | ----------------------------------------------------------------------- |
+| Have you ever talked to an AI? (chatting with AI)                         | Yes, chat with simple text like in general.              | Yes, used it and have some experience like teaching about it.           |
+| Which AI models do you tend to use (ie ChatGPT, Gemini, Claude, etc)?     | ChatGPT, Gemini.                                         | ChatGPT                                                                 |
+| What experiences do you have chatting with AI in general?                 | Asking random questions, looping it.                     | Answer to questions are up to part but were not completely reliable.    |
 | How can you detect AI generated writing?                                  | Very verbose.                                            |             |
 | Have you ever used generative AI for entertainment purposes?              | Roleplaying.                                             |             |
 | What’s your experience with social deduction games?                       | Among Us, Secret Hitler.                                 |             |
-| What is the speed at which you wish for the AI to react to questions?     | It doesn't matter untill it gives message as fast can be.|             |
+| What is the speed at which you wish for the AI to react to questions?     | It doesn't matter until it gives message as fast can be. |             |
 | What kind of questions can be asked to equally eliminate human from game  | Questions on the human experience.                       |             |
 | Do you have any questions for us?                                         | How is the interface going be (we mentioned chat based)  |             |
 
