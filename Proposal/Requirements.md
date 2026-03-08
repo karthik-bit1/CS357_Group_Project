@@ -22,17 +22,17 @@ permalink: /Proposal/Requirements/
 
 # 2. Stakeholders
 
-| Stakeholder questions                                                     | Game Club Member                                         | Professor                                                               |
-| ------------------------------------------------------------------------- | -------------------------------------------------------- | ----------------------------------------------------------------------- |
-| Have you ever talked to an AI? (chatting with AI)                         | Yes, chat with simple text like in general.              | Yes, used it and have some experience like teaching about it.           |
-| Which AI models do you tend to use (ie ChatGPT, Gemini, Claude, etc)?     | ChatGPT, Gemini.                                         | ChatGPT                                                                 |
-| What experiences do you have chatting with AI in general?                 | Asking random questions, looping it.                     | Answer to questions are up to part but were not completely reliable.    |
-| How can you detect AI generated writing?                                  | Very verbose.                                            |             |
-| Have you ever used generative AI for entertainment purposes?              | Roleplaying.                                             |             |
-| What’s your experience with social deduction games?                       | Among Us, Secret Hitler.                                 |             |
-| What is the speed at which you wish for the AI to react to questions?     | It doesn't matter until it gives message as fast can be. |             |
-| What kind of questions can be asked to equally eliminate human from game  | Questions on the human experience.                       |             |
-| Do you have any questions for us?                                         | How is the interface going be (we mentioned chat based)  |             |
+| Stakeholder questions                                                     | Game Club Member                                         | Professor                                                                |
+| ------------------------------------------------------------------------- | -------------------------------------------------------- | ------------------------------------------------------------------------ |
+| Have you ever talked to an AI? (chatting with AI)                         | Yes, chat with simple text like in general.              | Yes, used it and have some experience like teaching about it.            |
+| Which AI models do you tend to use (ie ChatGPT, Gemini, Claude, etc)?     | ChatGPT, Gemini.                                         | ChatGPT                                                                  |
+| What experiences do you have chatting with AI in general?                 | Asking random questions, looping it.                     | Answer to questions are up to part but were not completely reliable.     |
+| How can you detect AI generated writing?                                  | Very verbose.                                            | Depends on the writing style, sentence formation and meaning of the text.|
+| Have you ever used generative AI for entertainment purposes?              | Roleplaying.                                             | Not really used for entertaining purposes.				  |
+| What’s your experience with social deduction games?                       | Among Us, Secret Hitler.                                 | Among Us.						                  |
+| What is the speed at which you wish for the AI to react to questions?     | It doesn't matter until it gives message as fast can be. | If it is interactive that's enough.		                          |
+| What kind of questions can be asked to equally eliminate human from game  | Questions on the human experience.                       | Questions that can be answered well, not complex and help writers.       |
+| Do you have any questions for us?                                         | How is the interface going be (we mentioned chat based)  | How are the questions being asked and How long is the testing.           |
 
 # 3. Functional Requirements
   - User will be presented with the rules of the game prior to the start of the round
