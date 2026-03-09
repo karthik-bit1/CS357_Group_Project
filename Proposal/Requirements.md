@@ -50,7 +50,7 @@ permalink: /Proposal/Requirements/
   - Web based interface.
 
 # 4. Non Functional Requirements
-  - Multiplayer
+  - The ability to have multiple human players versus one AI.
   - The ability to have multiple human players against multiple AIs.
   - More rounds (possibly 5)
   - Fast AI responses
