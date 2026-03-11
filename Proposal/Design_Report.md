@@ -11,3 +11,5 @@ permalink: /Proposal/Design_Report/
 
 **Last Updated:** March 11, 2026.
 
+## Summary
+   
