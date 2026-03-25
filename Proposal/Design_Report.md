@@ -17,15 +17,15 @@ Our project is a reverse Turing Test. The game will be played online in the user
 
 
 #  Pre_Conditions
-   - startGame()   ---> Game will not start
-   - hintLoad()    ---> Hints will not be shown
-   - humanPlayer() ---> No players in game 
-   - askQuestions() ---> Questions will not be asked
-   - concatinateAnswers() ---> There are no answers to concatinate
-   - responseAI() ---> There are no AI responses
-   - Display() ---> There are no answers to display
-   - callVote() ---> There are no answers to vote for
-   - restartMode() ---> The game never started so it cannot loop
+   - Game needs to start ---> startGame()
+   - A hint is requested ---> hintLoad()
+   - The Human is not in the Game ---> humanPlayer()
+   - Questions haven't been asked ---> askQuestions()
+   - All Have Answered, Need to Concatinate to Prompt ---> concatinateAnswers()
+   - The AI needs to Respond ---> responseAI()
+   - There are answers but they are not displayed ---> Display()
+   - The Round is Ending, Voting needs to commence ---> callVote()
+   - The game never started so it cannot loop ---> restartMode()
 
 # UML DIAGRAM: 
 <img alt="UML Diagram" src="https://karthik-bit1.github.io/Group_Project/images/UML_Diagram.png" width="500" align="left">
