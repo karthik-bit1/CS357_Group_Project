@@ -38,5 +38,15 @@ Our project is a reverse Turing Test. The game will be played online in the user
    - The Round is Ending, Voting needs to commence ---> callVote()
    - The game never started so it cannot loop ---> restartMode()
 
+# Post_Conditions
+  - startGame() ---> Game has been initialized and is in an active state
+  - hintLoad() ---> A hint has been retrieved and is ready to be displayed to players
+  - humanPlayer() ---> The human player has been registered and added to the game session
+  - askQuestions() ---> All questions have been presented and player responses are being awaited
+  - concatinateAnswers() ---> All answers have been merged into a single formatted prompt string
+  - responseAI() ---> The AI has generated and returned a response based on the concatenated prompt
+  - Display() ---> All answers/responses are visible and rendered to the players
+  - callVote() ---> Votes have been collected and a voting result has been determined
+  - restartMode() ---> The system has been reset to its initial pre-game state, ready to call startGame()
 # UML DIAGRAM: 
 <img alt="UML Diagram" src="https://karthik-bit1.github.io/Group_Project/images/UML_Diagram.png" width="500" align="left">
