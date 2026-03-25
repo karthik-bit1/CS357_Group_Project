@@ -18,7 +18,7 @@ Our project is a reverse Turing Test. The game will be played online in the user
 # UML DIAGRAM: 
 <img alt="UML Diagram" src="https://karthik-bit1.github.io/Group_Project/images/UML_Diagram.png" width="500" align="left">
 
-##  Pre_Conditions
+#  Pre_Conditions
    - startGame()   ---> Game will not start
    - hintLoad()    ---> Hints will not be shown
    - humanPlayer() ---> No players in game 
