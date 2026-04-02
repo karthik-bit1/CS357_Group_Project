@@ -49,4 +49,4 @@ Our project is a reverse Turing Test. The game will be played online in the user
   - callVote() ---> Votes have been collected and a voting result has been determined
   - restartMode() ---> The system has been reset to its initial pre game state, ready to call startGame()
 # UML DIAGRAM: 
-<img alt="UML Diagram" src="https://karthik-bit1.github.io/Group_Project/images/UML_Diagram.png" width="500" align="left">
+<img alt="UML Diagram" src="https://karthik-bit1.github.io/Group_Project/images/UML_2.png" width="500" align="left">
