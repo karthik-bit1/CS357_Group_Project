@@ -50,3 +50,6 @@ Our project is a reverse Turing Test. The game will be played online in the user
   - restartMode() ---> The system has been reset to its initial pre game state, ready to call startGame()
 # UML DIAGRAM: 
 <img alt="UML Diagram" src="https://karthik-bit1.github.io/Group_Project/images/UML_2.png" width="500" align="left">
+
+# Function UML diagram:
+<img alt="UML Diagram" src="https://karthik-bit1.github.io/Group_Project/images/UML_3.png" width="500" align="left">
