@@ -1,4 +1,4 @@
-# Group_Project
+# Reverse Turing Test
 
 The following project is a Reverse Turing Test where a human player is pitted against 4 AI players.
 Both parties will recieve questions, which they must answer, before voting on who they believe is the human (or for the human, voting on which AI they believe the other AIs will vote for)
