@@ -386,7 +386,7 @@ def show_result():
         if st.button("Play again"):
             resetgame()
             st.rerun()
-    elif len(remaining_ai) == 0:
+    elif st.session_state.round_number == MAX_ROUNDS:
         st.success("All AIs have been eliminated! You win! 🎉")
         if st.button("Play again"):
             resetgame()
