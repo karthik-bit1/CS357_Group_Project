@@ -95,7 +95,7 @@ def init_game_state():
         "human_vote": "",        # who the human voted for
         "vote_result": "",       # name of eliminated player
         "eliminated": [],        # all names removed so far
-        "asked_questions": [],    # questions already used in this game
+        "asked_questions": []   # questions already used in this game
     }
     for key, value in defaults.items():
         if key not in st.session_state:
@@ -116,12 +116,12 @@ def askquestion():
     rd.choice(questions,3)
 
 def get_next_question():
-    remaining = [q for q in questions if q not in st.session_state.asked_questions]
+    remaining = [q for q in questions if q not in st.session_state["asked_questions"]]
     if not remaining:
-        st.session_state.asked_questions = []
+        st.session_state["asked_questions"] = []
         remaining = questions.copy()
     question = rd.choice(remaining)
-    st.session_state.asked_questions.append(question)
+    st.session_state["asked_questions"].append(question)
     return question
 
 def humanplayer():
