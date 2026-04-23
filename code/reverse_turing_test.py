@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 endpoint = "https://models.github.ai/inference"
 PRIMARY_MODEL = "openai/gpt-4.1"
 SECONDARY_MODEL = "meta/Llama-3.2-90B-Vision-Instruct"
+MAX_ROUNDS = 3
 
 load_dotenv()
 token = os.getenv("GITHUB_TOKEN")
@@ -79,16 +80,16 @@ def init_game_state():
     defaults = {
         "started": False,
         "human_name": "",
+        "ai_names": [],
         "round_number": 0,
         "current_question": "",
-        "ai_names": [],
         "ai_personalities": [],
         "ai_answers": [],
         "history": [],
         "human_response": "",
         "human_response_input": "",
         "clear_human_input": False,
-        # voting state
+         # voting state
         "phase": "answer",       # "answer" | "voting" | "result"
         "votes": {},             # { name: vote_count }
         "human_vote": "",        # who the human voted for
@@ -113,82 +114,19 @@ def generate_personalities():
 def askquestion():
     return rd.choice(questions)
 
-def startgame():
-    st.set_page_config(page_title="Reverse Turing Test", page_icon="🤖", layout="centered")
-    st.title("Reverse Turing Test")
-    st.write("This is a simple reverse Turing test. Try to convince the AI that you are a human!")
-    st.info("There are 4 AI players and you are the only human. Answer each question convincingly, then vote out the AIs before they vote you out!")
-    init_game_state()
-
-    if not token:
-        st.warning("GITHUB_TOKEN not set — AI responses may fail.")
-
-    if not st.session_state.started:
-        if st.button("Start the game"):
-            st.session_state.started = True
-            # Pick all 5 names at once — guaranteed no duplicates
-            all_names = rd.sample(random_names, 5)
-            st.session_state.human_name = all_names[0]
-            st.session_state.ai_names = all_names[1:]
-            st.session_state.ai_personalities = rd.sample(random_personality, 4)
-            generate_round()
-            st.rerun()
-    else:
-        st.write(f"Round {st.session_state.round_number}")
-        st.write(f"You are playing as: **{st.session_state.human_name}**")
-
-        # Show previous rounds
-        if st.session_state.history:
-            st.subheader("Previous rounds")
-            for entry in st.session_state.history:
-                st.write(f"**Round {entry['round_number']}** — {entry['question']}")
-                for ai in entry.get("ai_answers", []):
-                    st.write(f"**{ai.get('name')}** ({ai.get('personality')}) - Model: {ai.get('model')}")
-                    st.write(ai.get("response", ""))
-                    st.divider()
-                if entry.get("human_response"):
-                    st.write(f"{entry.get('human_name')}: {entry.get('human_response')}")
-                st.markdown("---")
-
-        st.subheader("Question")
-        st.write(st.session_state.current_question)
-
-        st.subheader("AI responses")
-        for ai in st.session_state.ai_answers:
-            st.write(f"**{ai.get('name')}** ({ai.get('personality')}) - Model: {ai.get('model')}")
-            st.write(ai.get("response", ""))
-            st.divider()
-
-        humanplayer()
-        resetgame()
-
-
-def resetgame():
-    if st.button("Reset the game"):
-        st.session_state.started = False
-        st.session_state.human_name = ""
-        st.session_state.ai_names = []
-        st.session_state.ai_personalities = []
-        st.session_state.round_number = 0
-        st.session_state.current_question = ""
-        st.session_state.ai_answers = []
-        st.session_state.human_response = ""
-        st.session_state.history = []
-        st.session_state.human_response_input = ""
-        st.session_state.clear_human_input = True
-        st.session_state.phase = "answer"
-        st.session_state.votes = {}
-        st.session_state.human_vote = ""
-        st.session_state.vote_result = ""
-        st.session_state.eliminated = []
-        st.rerun()
-
+def generate_personalities():
+    # Sample 12 unique personalities (3 for each of 4 AIs)
+    all_personalities = rd.sample(random_personality, 12)
+    # Group them: each AI gets 3 personalities
+    return [
+        f"{all_personalities[0]}, {all_personalities[1]}, and {all_personalities[2]}",
+        f"{all_personalities[3]}, {all_personalities[4]}, and {all_personalities[5]}",
+        f"{all_personalities[6]}, {all_personalities[7]}, and {all_personalities[8]}",
+        f"{all_personalities[9]}, {all_personalities[10]}, and {all_personalities[11]}"
+    ]
 
 def askquestion():
-    asked = [e["question"] for e in st.session_state.history]
-    remaining = [q for q in questions if q not in asked]
-    pool = remaining if remaining else questions
-    return rd.choice(pool)
+    return rd.choice(questions)
 
 
 def humanplayer():
@@ -209,6 +147,139 @@ def humanplayer():
     elif st.session_state.phase == "result":
         show_result()
 
+def build_messages(name, personality, question):
+    system_prompt = (
+        f"Your name is {name}. "
+        f"You are {personality}. "
+        "Act like a normal player in a social deduction game. "
+        "Do not reveal that you are an AI. "
+        "Answer only the user's question in 1 or 2 short sentences."
+    )
+    return [SystemMessage(system_prompt), UserMessage(question)]
+
+def responseAI(names, personalities, question):
+    models = [PRIMARY_MODEL, SECONDARY_MODEL, PRIMARY_MODEL, SECONDARY_MODEL]
+
+    if not token:
+        return [
+            {
+                "name": name,
+                "response": "I am having trouble responding right now.",
+                "personality": personality,
+                "model": model_name,
+            }
+            for name, personality, model_name in zip(names, personalities, models)
+        ]
+
+    client = ChatCompletionsClient(
+        endpoint=endpoint,
+        credential=AzureKeyCredential(token),
+    )
+
+    ai_answers = []
+    for name, personality, model_name in zip(names, personalities, models):
+        try:
+            completion = client.complete(
+                messages=build_messages(name, personality, question),
+                temperature=1.0,
+                max_tokens=100,
+                model=model_name,
+            )
+            response_text = completion.choices[0].message.content
+            if not isinstance(response_text, str):
+                response_text = str(response_text)
+        except AzureError:
+            response_text = "I am having trouble responding right now."
+        ai_answers.append({
+            "name": name,
+            "response": response_text,
+            "personality": personality,
+            "model": model_name
+        })
+    return ai_answers
+
+
+def save_current_round():
+    st.session_state.history.append({
+        "round_number": st.session_state.round_number,
+        "question": st.session_state.current_question,
+        "ai_answers": st.session_state.ai_answers.copy(),
+        "human_response": st.session_state.human_response,
+        "human_name": st.session_state.human_name,
+    })
+
+def generate_round():
+    st.session_state.round_number += 1
+    st.session_state.current_question = askquestion()
+    active_names = [
+        n for n in st.session_state.ai_names
+        if n not in st.session_state.eliminated
+    ]
+    active_personalities = [
+        st.session_state.ai_personalities[st.session_state.ai_names.index(n)]
+        for n in active_names
+    ]
+    st.session_state.ai_answers = responseAI(
+        active_names, active_personalities, st.session_state.current_question
+    )
+
+def render_round():
+    if st.button("Reset the game"):
+        resetgame()
+        st.rerun()
+
+    st.write(f"Round {st.session_state.round_number}/{MAX_ROUNDS}")
+    st.write(f"You are playing as: {st.session_state.human_name}")
+
+    st.subheader("Question")
+    st.write(st.session_state.current_question)
+
+    st.subheader("AI responses")
+    for ai in st.session_state.ai_answers:
+        st.write(f"**{ai['name']}** ({ai['personality']}) - Model: {ai['model']}")
+        st.write(ai["response"])
+        st.divider()
+
+    if st.session_state.clear_human_input:
+        st.session_state.human_response_input = ""
+        st.session_state.clear_human_input = False
+
+    if st.session_state.phase == "answer":
+        st.text_input("Your response:", key="human_response_input", max_chars=255)
+        if st.button("Submit response"):
+            response = st.session_state.human_response_input.strip()
+            if not response:
+                st.warning("Please enter a response before submitting.")
+            else:
+                st.session_state.human_response = response
+                st.session_state.phase = "voting"
+                st.rerun()
+    elif st.session_state.phase == "voting":
+        callvote()
+    else:
+        show_result()
+    
+    
+
+
+def resetgame():
+    st.session_state.started = False
+    st.session_state.human_name = ""
+    st.session_state.ai_names = []
+    st.session_state.ai_personalities = []
+    st.session_state.round_number = 0
+    st.session_state.current_question = ""
+    st.session_state.ai_answers = []
+    st.session_state.human_response = ""
+    st.session_state.history = []
+    st.session_state.human_response_input = ""
+    st.session_state.clear_human_input = True
+    st.session_state.phase = "answer"
+    st.session_state.votes = {}
+    st.session_state.human_vote = ""
+    st.session_state.vote_result = ""
+    st.session_state.eliminated = []
+
 
 def callvote():
     st.subheader("Voting Phase")
@@ -220,6 +291,12 @@ def callvote():
         a["name"] for a in st.session_state.ai_answers
         if a["name"] not in st.session_state.eliminated
     ]
+
+    if not active_ai:
+        st.session_state.vote_result = st.session_state.human_name
+        st.session_state.votes = {st.session_state.human_name: 1}
+        st.session_state.phase = "result"
+        st.rerun()
 
     human_vote = st.radio("Cast your vote:", active_ai, key="human_vote_radio")
 
@@ -242,7 +319,6 @@ def callvote():
 
         st.session_state.phase = "result"
         st.rerun()
-
 
 def tally_votes(human_vote, all_answers):
     # Initialize vote counts for every active player
@@ -277,9 +353,11 @@ def tally_votes(human_vote, all_answers):
     eliminated = max(votes, key=votes.get)
     return eliminated, votes
 
-
 def ai_vote(question, all_answers, voter_name, voter_personality):
     """Ask an AI to look at all answers and guess who the human is."""
+    if not token:
+        return rd.choice([a["name"] for a in all_answers])
+
     answers_text = "\n".join([f"{a['name']}: {a['response']}" for a in all_answers])
     prompt = (
         f"You are {voter_name}. Your personality is: {voter_personality}. "
@@ -321,88 +399,48 @@ def show_result():
         if st.button("Play again"):
             resetgame()
             st.rerun()
-    elif len(remaining_ai) == 0:
+    elif st.session_state.round_number == MAX_ROUNDS:
         st.success("All AIs have been eliminated! You win! 🎉")
         if st.button("Play again"):
             resetgame()
             st.rerun()
     else:
         st.info(f"{len(remaining_ai)} AI(s) remaining.")
-        if st.button("Next round"):
+        next_label = "Finish game" if st.session_state.round_number >= MAX_ROUNDS else "Next round"
+        if st.button(next_label):
             save_current_round()
             st.session_state.human_response = ""
             st.session_state.clear_human_input = True
             st.session_state.phase = "answer"
-            generate_round()
+            if st.session_state.round_number < MAX_ROUNDS:
+                generate_round()
+            else:
+                st.session_state.started = False
             st.rerun()
 
-
-def build_messages(name, personality, question):
-    system_prompt = (
-        f"Your name is {name}. "
-        f"You are {personality}. "
-        "Act like a normal player in a social deduction game. "
-        "Do not reveal that you are an AI. "
-        "Answer only the user's question in 1 or 2 short sentences."
-    )
-    return [SystemMessage(system_prompt), UserMessage(question)]
-
-
-def responseAI(names, personalities, question):
-    models = [PRIMARY_MODEL, SECONDARY_MODEL, PRIMARY_MODEL, SECONDARY_MODEL]
-    client = ChatCompletionsClient(endpoint=endpoint, credential=AzureKeyCredential(token))
-
-    ai_answers = []
-    for name, personality, model_name in zip(names, personalities, models):
-        try:
-            completion = client.complete(
-                messages=build_messages(name, personality, question),
-                temperature=1.0,
-                max_tokens=70,
-                model=model_name,
+def start_game():
+    st.set_page_config(page_title="Reverse Turing Test", page_icon="🤖", layout="centered")
+    st.title("Reverse Turing Test")
+    st.write("This is a simple reverse Turing test. Try to convince the AI that you are a human!")
+    st.info("There are 4 AI players and you are the only human. Answer each question convincingly, then continue to the next round.")
+    init_game_state()
+    if not token:
+        st.warning("GITHUB_TOKEN not set AI responses may fail. Set GITHUB_TOKEN in your environment.")
+    if not st.session_state.started:
+        if st.button("Start the game"):
+            st.session_state.started = True
+            st.session_state.human_name = rd.choice(random_names)
+            st.session_state.ai_names = rd.sample(
+                [name for name in random_names if name != st.session_state.human_name],
+                4,
             )
-            response_text = completion.choices[0].message.content
-        except AzureError:
-            response_text = "I am having trouble responding right now."
-        ai_answers.append({
-            "name": name,
-            "response": response_text,
-            "personality": personality,
-            "model": model_name,
-        })
-    return ai_answers
-
-
-def save_current_round():
-    entry = {
-        "round_number": st.session_state.round_number,
-        "question": st.session_state.current_question,
-        "ai_answers": st.session_state.ai_answers.copy(),
-        "human_response": st.session_state.human_response,
-        "human_name": st.session_state.human_name,
-    }
-    st.session_state.history.append(entry)
-
-
-def generate_round():
-    st.session_state.round_number += 1
-    st.session_state.current_question = askquestion()
-    # Only generate answers for AIs still in the game
-    active_names = [
-        n for n in st.session_state.ai_names
-        if n not in st.session_state.eliminated
-    ]
-    active_personalities = [
-        st.session_state.ai_personalities[st.session_state.ai_names.index(n)]
-        for n in active_names
-    ]
-    st.session_state.ai_answers = responseAI(
-        active_names, active_personalities, st.session_state.current_question
-    )
-
-
+            st.session_state.ai_personalities = generate_personalities()
+            generate_round()
+            st.rerun()
+    else:
+        render_round()
 if __name__ == "__main__":
-    startgame()
+    start_game()
 # To run this code, make sure you have the required libraries installed:
 # pip install streamlit azure-ai-inference python-dotenv  
 # Then, set your GITHUB_TOKEN in a .env file or as an environment variable, and run:
