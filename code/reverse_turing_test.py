@@ -1,4 +1,3 @@
-
 import os
 import streamlit as st
 import random as rd
@@ -100,6 +99,19 @@ def init_game_state():
         if key not in st.session_state:
             st.session_state[key] = value
 
+def generate_personalities():
+    # Sample 12 unique personalities (3 for each of 4 AIs)
+    all_personalities = rd.sample(random_personality, 12)
+    # Group them: each AI gets 3 personalities
+    return [
+        f"{all_personalities[0]}, {all_personalities[1]}, and {all_personalities[2]}",
+        f"{all_personalities[3]}, {all_personalities[4]}, and {all_personalities[5]}",
+        f"{all_personalities[6]}, {all_personalities[7]}, and {all_personalities[8]}",
+        f"{all_personalities[9]}, {all_personalities[10]}, and {all_personalities[11]}"
+    ]
+
+def askquestion():
+    return rd.choice(questions)
 
 def startgame():
     st.set_page_config(page_title="Reverse Turing Test", page_icon="🤖", layout="centered")
