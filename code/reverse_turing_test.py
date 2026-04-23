@@ -95,6 +95,7 @@ def init_game_state():
         "human_vote": "",        # who the human voted for
         "vote_result": "",       # name of eliminated player
         "eliminated": [],        # all names removed so far
+        "asked_questions": [],    # questions already used in this game
     }
     for key, value in defaults.items():
         if key not in st.session_state:
@@ -111,23 +112,14 @@ def generate_personalities():
         f"{all_personalities[9]}, {all_personalities[10]}, and {all_personalities[11]}"
     ]
 
-def askquestion():
-    return rd.choice(questions)
-
-def generate_personalities():
-    # Sample 12 unique personalities (3 for each of 4 AIs)
-    all_personalities = rd.sample(random_personality, 12)
-    # Group them: each AI gets 3 personalities
-    return [
-        f"{all_personalities[0]}, {all_personalities[1]}, and {all_personalities[2]}",
-        f"{all_personalities[3]}, {all_personalities[4]}, and {all_personalities[5]}",
-        f"{all_personalities[6]}, {all_personalities[7]}, and {all_personalities[8]}",
-        f"{all_personalities[9]}, {all_personalities[10]}, and {all_personalities[11]}"
-    ]
-
-def askquestion():
-    return rd.choice(questions)
-
+def get_next_question():
+    remaining = [q for q in questions if q not in st.session_state.asked_questions]
+    if not remaining:
+        st.session_state.asked_questions = []
+        remaining = questions.copy()
+    question = rd.choice(remaining)
+    st.session_state.asked_questions.append(question)
+    return question
 
 def humanplayer():
     if st.session_state.phase == "answer":
@@ -137,7 +129,7 @@ def humanplayer():
 
         st.text_input("Your response:", key="human_response_input", max_chars=255)
         if st.button("Submit response"):
-            st.session_state.human_response = st.session_state.human_response_input.strip()
+            st.session_state.human_response = st.session_state.human_response_input.strip()[:255]
             st.session_state.phase = "voting"
             st.rerun()
 
@@ -210,7 +202,7 @@ def save_current_round():
 
 def generate_round():
     st.session_state.round_number += 1
-    st.session_state.current_question = askquestion()
+    st.session_state.current_question = get_next_question()
     active_names = [
         n for n in st.session_state.ai_names
         if n not in st.session_state.eliminated
@@ -251,7 +243,7 @@ def render_round():
             if not response:
                 st.warning("Please enter a response before submitting.")
             else:
-                st.session_state.human_response = response
+                st.session_state.human_response = response[:255]
                 st.session_state.phase = "voting"
                 st.rerun()
     elif st.session_state.phase == "voting":
@@ -279,6 +271,7 @@ def resetgame():
     st.session_state.human_vote = ""
     st.session_state.vote_result = ""
     st.session_state.eliminated = []
+    st.session_state.asked_questions = []
 
 
 def callvote():
