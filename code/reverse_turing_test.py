@@ -112,6 +112,9 @@ def generate_personalities():
         f"{all_personalities[9]}, {all_personalities[10]}, and {all_personalities[11]}"
     ]
 
+def askquestion():
+    rd.choice(questions,3)
+
 def get_next_question():
     remaining = [q for q in questions if q not in st.session_state.asked_questions]
     if not remaining:
@@ -190,6 +193,8 @@ def responseAI(names, personalities, question):
         })
     return ai_answers
 
+def askquestions():
+    return rd.sample(questions)
 
 def save_current_round():
     st.session_state.history.append({
@@ -427,6 +432,7 @@ def start_game():
                 [name for name in random_names if name != st.session_state.human_name],
                 4,
             )
+            st.session_state.asked_questions = askquestion()
             st.session_state.ai_personalities = generate_personalities()
             generate_round()
             st.rerun()
