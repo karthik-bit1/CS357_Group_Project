@@ -48,7 +48,7 @@ def test_tally_votes_eliminates_player_with_most_votes(game_module, monkeypatch)
 
     game_module.st.session_state["human_name"] = "Human"
     game_module.st.session_state["current_question"] = "Q"
-    game_module.st.session_state.eliminated = []
+    game_module.st.session_state["eliminated"] = []
     game_module.st.session_state["ai_answers"] = [
         {"name": "AI1", "personality": "P1", "response": "r1"},
         {"name": "AI2", "personality": "P2", "response": "r2"},
