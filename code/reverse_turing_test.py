@@ -136,7 +136,7 @@ def get_next_question():
     return question
   
 def hintload():
-    round_num = st.session_state.round_number
+    round_num = st.session_state['round_number']
     if round_num > 3:
         return
  
