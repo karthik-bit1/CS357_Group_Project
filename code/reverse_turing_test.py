@@ -112,9 +112,6 @@ def generate_personalities():
         f"{all_personalities[9]}, {all_personalities[10]}, and {all_personalities[11]}"
     ]
 
-def askquestions():
-    return rd.sample(questions)
-
 def get_next_question():
     remaining = [q for q in questions if q not in st.session_state["asked_questions"]]
     if not remaining:
@@ -204,7 +201,6 @@ def save_current_round():
 
 def generate_round():
     st.session_state["round_number"] += 1
-    st.session_state['asked_questions'] = askquestion()
     st.session_state["current_question"] = get_next_question()
     active_names = [
         n for n in st.session_state["ai_names"]
