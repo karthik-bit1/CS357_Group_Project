@@ -189,6 +189,9 @@ def test_render_round_displays_ai_answers_before_submission(game_module):
         def expander(self, label, expanded=False):
             return FakeExpander()
 
+        def markdown(self, text, *args, **kwargs):
+            self.calls.append(("markdown", text))
+
         def button(self, label):
             self.button_labels.append(label)
             return False
