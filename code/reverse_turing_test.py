@@ -78,15 +78,15 @@ AI_Writing_Hints = [
     {"flag": "🔴 Red Flag", "tip": "The opening sentence summarizes the entire topic immediately."},
     {"flag": "🔴 Red Flag", "tip": "Very long, fully structured paragraphs with no tangents or digressions are a strong AI signal."},
     {"flag": "🔴 Red Flag", "tip": "Sentences that start with 'And' or 'But' at the beginning of a line feel poetic, AI does this more than humans."},
-    {"flag": "🟠 Orange Flag", "tip": "Phrases like 'education and critical thinking' or 'misleading information, biased perspectives' sound polished but generic."},
-    {"flag": "🟠 Orange Flag", "tip": "Three item lists ('learn, communicate, and share ideas') are a common AI rhythm, humans rarely write in threes so consistently."},
+    {"flag": "🟡 Yellow Flag", "tip": "Phrases like 'education and critical thinking' or 'misleading information, biased perspectives' sound polished but generic."},
+    {"flag": "🟡 Yellow Flag", "tip": "Three item lists ('learn, communicate, and share ideas') are a common AI rhythm, humans rarely write in threes so consistently."},
     {"flag": "🟡 Yellow Flag", "tip": "Words like 'long-held', 'media and technology', or 'confusion and discomfort' are slightly formal, a human might say it more casually."},
     {"flag": "🟡 Yellow Flag", "tip": "Responses that directly restate the question before answering ('The most important quality in a friend is...') are a mild AI tell."},
     {"flag": "🟡 Yellow Flag", "tip": "Overly balanced answers that present 'two sides' without picking one are common in AI writing."},
     {"flag": "🟢 Green (Safe)", "tip": "Specific personal memories with names, places, or concrete details are hard for AI to fake convincingly."},
     {"flag": "🟢 Green (Safe)", "tip": "Casual phrasing, incomplete thoughts, or mild grammar quirks suggest a real human wrote it."},
-    {"flag": "⚠️ Watch For", "tip": "Em dashes (—) used mid sentence are a known AI writing habit. Most humans use commas or just split the sentence."},
-    {"flag": "⚠️ Watch For", "tip": "If every sentence in a response is roughly the same length, it's likely AI. Human writing varies more."},
+    {"flag": "🟢 Green (Safe)", "tip": "Em dashes (—) used mid sentence are a known AI writing habit. Most humans use commas or just split the sentence."},
+    {"flag": "🟢 Green (Safe)", "tip": "If every sentence in a response is roughly the same length, it's likely AI. Human writing varies more."},
 ]
 
 def init_game_state():
@@ -136,13 +136,20 @@ def get_next_question():
     return question
   
 def hintload():
-    if st.session_state.round_number > 2:
+    round_num = st.session_state.round_number
+    if round_num > 3:
         return
-    rng = rd.Random(st.session_state.round_number)
-    hint = rng.choice(AI_Writing_Hints)
  
-    with st.expander(f"💡 Hint on how to spot AI writing", expanded=True):
+    flag_order = {1: "🔴 Red Flag", 2: "🟡 Yellow Flag", 3: "🟢 Green (Safe)"}
+    target_flag = flag_order[round_num]
+ 
+    rng = rd.Random(round_num)
+    pool = [h for h in AI_Writing_Hints if h["flag"] == target_flag]
+    hint = rng.choice(pool)
+ 
+    with st.expander(f"💡 Hint on How to spot AI writing", expanded=True):
         st.markdown(f"**{hint['flag']}** — {hint['tip']}")
+ 
             
 def humanplayer():
     if st.session_state.phase == "answer":
