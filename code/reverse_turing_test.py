@@ -253,7 +253,7 @@ def render_round():
         st.write(f"**{ai['name']}** ({ai['personality']}) - Model: {ai['model']}")
         st.write(ai["response"])
         st.divider()
-         hintload() #display hints before human input
+     hintload() #display hints before human input
     if st.session_state['clear_human_input']:
         st.session_state['human_response_input'] = ""
         st.session_state['clear_human_input'] = False
