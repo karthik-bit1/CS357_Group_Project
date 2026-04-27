@@ -4,7 +4,12 @@ import pytest
 class FakeStreamlit:
     def __init__(self):
         self.session_state = {}
+class FakeExpander:
+    def __enter__(self):
+        return self
 
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        pass
 
 @pytest.mark.unit
 def test_start_assigns_five_unique_players(game_module):
@@ -180,6 +185,9 @@ def test_render_round_displays_ai_answers_before_submission(game_module):
             }
             self.writes = []
             self.button_labels = []
+
+        def expander(self, label, expanded=False):
+        return FakeExpander()
 
         def button(self, label):
             self.button_labels.append(label)
