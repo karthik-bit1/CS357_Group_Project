@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 
 endpoint = "https://models.github.ai/inference"
 PRIMARY_MODEL = "openai/gpt-4o-mini"
-SECONDARY_MODEL = "openai/gpt-4.1"
+SECONDARY_MODEL = "openai/gpt-4o-mini"
 MAX_ROUNDS = 3
 
 load_dotenv()
