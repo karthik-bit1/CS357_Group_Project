@@ -451,7 +451,8 @@ def start_game():
             st.session_state['starting_game'] = True
             st.rerun()
     elif st.session_state['starting_game'] and not st.session_state['started']:
-        st.info("Setting up players and generating the first round.")
+        st.subheader("Starting game...")
+        st.write("Setting up players and generating the first round.")
         with st.spinner("starting game..."):
             st.session_state['started'] = True
             st.session_state['human_name'] = rd.choice(random_names)
