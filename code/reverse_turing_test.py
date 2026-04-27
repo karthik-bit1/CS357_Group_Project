@@ -420,8 +420,8 @@ def start_game():
     init_game_state()
     if not token:
         st.warning("GITHUB_TOKEN not set AI responses may fail. Set GITHUB_TOKEN in your environment.")
-    if not st.session_state['started']:
-        if st.button("Start the game", disabled=st.session_state.start_clicked):
+    if not st.session_state['started'] and not st.session_state['start_clicked']:
+        if st.button("Start the game"):
             st.session_state['start_clicked'] = True
             st.session_state['started'] = True
             st.session_state['human_name'] = rd.choice(random_names)
@@ -432,8 +432,10 @@ def start_game():
             st.session_state['ai_personalities'] = generate_personalities()
             generate_round()
             st.rerun()
-    else:
+    elif st.session_state['started']:
         render_round()
+    elif st.session_state['start_clicked'] and not st.session_state['started']:
+        st.info("Starting game...")
 if __name__ == "__main__":
     start_game()
 # To run this code, make sure you have the required libraries installed:
