@@ -187,7 +187,7 @@ def test_render_round_displays_ai_answers_before_submission(game_module):
             self.button_labels = []
 
         def expander(self, label, expanded=False):
-        return FakeExpander()
+            return FakeExpander()
 
         def button(self, label):
             self.button_labels.append(label)
