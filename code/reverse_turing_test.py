@@ -421,7 +421,7 @@ def start_game():
     if not token:
         st.warning("GITHUB_TOKEN not set AI responses may fail. Set GITHUB_TOKEN in your environment.")
     if not st.session_state['started']:
-        if st.button("Start the game"):
+        if st.button("Start the game", disabled=st.session_state.start_clicked):
             st.session_state['start_clicked'] = True
             st.session_state['started'] = True
             st.session_state['human_name'] = rd.choice(random_names)
