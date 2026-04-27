@@ -423,23 +423,19 @@ def show_result():
         if st.button("Play again"):
             resetgame()
             st.rerun()
-    elif st.session_state['round_number'] == MAX_ROUNDS:
-        st.success("All AIs have been eliminated! You win! 🎉")
+    elif st.session_state.round_number >= MAX_ROUNDS:
+        st.success(f"You survived all {MAX_ROUNDS} rounds! You win! 🎉")
         if st.button("Play again"):
             resetgame()
             st.rerun()
     else:
         st.info(f"{len(remaining_ai)} AI(s) remaining.")
-        next_label = "Finish game" if st.session_state['round_number'] >= MAX_ROUNDS else "Next round"
-        if st.button(next_label):
+        if st.button("Next round"):
             save_current_round()
             st.session_state['human_response'] = ""
             st.session_state['clear_human_input'] = True
             st.session_state['phase'] = "answer"
-            if st.session_state['round_number'] < MAX_ROUNDS:
-                generate_round()
-            else:
-                st.session_state['started'] = False
+            generate_round()
             st.rerun()
 
 def start_game():
