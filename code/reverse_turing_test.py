@@ -204,6 +204,7 @@ def save_current_round():
 
 def generate_round():
     st.session_state["round_number"] += 1
+    st.session_state['asked_questions'] = askquestion()
     st.session_state["current_question"] = get_next_question()
     active_names = [
         n for n in st.session_state["ai_names"]
@@ -429,7 +430,6 @@ def start_game():
                 [name for name in random_names if name != st.session_state['human_name']],
                 4,
             )
-            st.session_state['asked_questions'] = askquestion()
             st.session_state['ai_personalities'] = generate_personalities()
             generate_round()
             st.rerun()
