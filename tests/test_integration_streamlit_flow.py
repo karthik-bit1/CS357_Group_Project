@@ -60,7 +60,7 @@ def test_three_rounds_end_game_and_play_again_resets():
             break
         submit_vote_buttons[0].click().run()
 
-        next_buttons = [b for b in at.button if b.label in ("Next round", "Finish game")]
+        next_buttons = [b for b in at.button if b.label in ("Next round")]
         if next_buttons:
             next_buttons[0].click().run()
 
