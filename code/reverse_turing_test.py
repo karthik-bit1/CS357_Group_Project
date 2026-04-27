@@ -74,7 +74,7 @@ questions = [
     "What is a piece of media that has influenced you significantly and why?",
     "You enter a nondescript room. What is the first thing you are going to do?",
 ]
-AI_WRITING_HINTS = [
+AI_Writing_Hints = [
     {"flag": "🔴 Red Flag", "tip": "The opening sentence summarizes the entire topic immediately."},
     {"flag": "🔴 Red Flag", "tip": "Very long, fully structured paragraphs with no tangents or digressions are a strong AI signal."},
     {"flag": "🔴 Red Flag", "tip": "Sentences that start with 'And' or 'But' at the beginning of a line feel poetic, AI does this more than humans."},
@@ -139,7 +139,7 @@ def hintload():
     if st.session_state.round_number > 2:
         return
     rng = rd.Random(st.session_state.round_number)
-    hint = rng.choice(AI_WRITING_HINTS)
+    hint = rng.choice(AI_Writing_Hints)
  
     with st.expander(f"💡 Hint on how to spot AI writing", expanded=True):
         st.markdown(f"**{hint['flag']}** — {hint['tip']}")
