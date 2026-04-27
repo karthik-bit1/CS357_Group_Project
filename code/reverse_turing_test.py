@@ -112,8 +112,8 @@ def generate_personalities():
         f"{all_personalities[9]}, {all_personalities[10]}, and {all_personalities[11]}"
     ]
 
-def askquestion():
-    rd.choice(questions,3)
+def askquestions():
+    return rd.sample(questions)
 
 def get_next_question():
     remaining = [q for q in questions if q not in st.session_state["asked_questions"]]
@@ -192,9 +192,6 @@ def responseAI(names, personalities, question):
             "model": model_name
         })
     return ai_answers
-
-def askquestions():
-    return rd.sample(questions)
 
 def save_current_round():
     st.session_state.history.append({
