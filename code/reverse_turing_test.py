@@ -25,7 +25,7 @@ random_names = [
     "Mason", "Leon", "Ashley", "Ada", "Chris", "Albert", "Claire", "Jill",
     "Rebecca", "Ethan", "Lucifer", "Lucy", "Malenia, Blade of Miquella", "Peter",
     "Lois", "Stewie", "Brian", "Cleveland", "Marley", "Jordan", "Michael",
-    "Michal", "Marty", "Agent 47", "Diana", "Jake", "Utah", "Walter", "Jesse",
+    "Michael", "Marty", "Agent 47", "Diana", "Jake", "Utah", "Walter", "Jesse",
     "Nick", "Rick", "Morty", "Nic", "Nick", "Nicholas", "Kevin", "Keith", "Kate",
     "Kathrine", "Cathrine", "Cat", "Kitty", "Lisa", "Superman", "The British Raj",
     "Karthik", "Jkhari", "Steven", "Bill", "William", "Ash", "Misty", "Brock",
@@ -74,7 +74,20 @@ questions = [
     "What is a piece of media that has influenced you significantly and why?",
     "You enter a nondescript room. What is the first thing you are going to do?",
 ]
-
+AI_Writing_Hints = [
+    {"flag": "🔴 Red Flag", "tip": "The opening sentence summarizes the entire topic immediately."},
+    {"flag": "🔴 Red Flag", "tip": "Very long, fully structured paragraphs with no tangents or digressions are a strong AI signal."},
+    {"flag": "🔴 Red Flag", "tip": "Sentences that start with 'And' or 'But' at the beginning of a line feel poetic, AI does this more than humans."},
+    {"flag": "🟠 Orange Flag", "tip": "Phrases like 'education and critical thinking' or 'misleading information, biased perspectives' sound polished but generic."},
+    {"flag": "🟠 Orange Flag", "tip": "Three item lists ('learn, communicate, and share ideas') are a common AI rhythm, humans rarely write in threes so consistently."},
+    {"flag": "🟡 Yellow Flag", "tip": "Words like 'long-held', 'media and technology', or 'confusion and discomfort' are slightly formal, a human might say it more casually."},
+    {"flag": "🟡 Yellow Flag", "tip": "Responses that directly restate the question before answering ('The most important quality in a friend is...') are a mild AI tell."},
+    {"flag": "🟡 Yellow Flag", "tip": "Overly balanced answers that present 'two sides' without picking one are common in AI writing."},
+    {"flag": "🟢 Green (Safe)", "tip": "Specific personal memories with names, places, or concrete details are hard for AI to fake convincingly."},
+    {"flag": "🟢 Green (Safe)", "tip": "Casual phrasing, incomplete thoughts, or mild grammar quirks suggest a real human wrote it."},
+    {"flag": "⚠️ Watch For", "tip": "Em dashes (—) used mid sentence are a known AI writing habit. Most humans use commas or just split the sentence."},
+    {"flag": "⚠️ Watch For", "tip": "If every sentence in a response is roughly the same length, it's likely AI. Human writing varies more."},
+]
 
 def init_game_state():
     defaults = {
@@ -121,7 +134,16 @@ def get_next_question():
     question = rd.choice(remaining)
     st.session_state["asked_questions"].append(question)
     return question
-
+  
+def hintload():
+    if st.session_state.round_number > 2:
+        return
+    rng = rd.Random(st.session_state.round_number)
+    hint = rng.choice(AI_Writing_Hints)
+ 
+    with st.expander(f"💡 Hint on how to spot AI writing", expanded=True):
+        st.markdown(f"**{hint['flag']}** — {hint['tip']}")
+            
 def humanplayer():
     if st.session_state.phase == "answer":
         if st.session_state.clear_human_input:
@@ -231,7 +253,7 @@ def render_round():
         st.write(f"**{ai['name']}** ({ai['personality']}) - Model: {ai['model']}")
         st.write(ai["response"])
         st.divider()
-
+         hintload() #display hints before human input
     if st.session_state['clear_human_input']:
         st.session_state['human_response_input'] = ""
         st.session_state['clear_human_input'] = False
