@@ -79,6 +79,7 @@ questions = [
 def init_game_state():
     defaults = {
         "started": False,
+        "start_clicked": False,
         "human_name": "",
         "ai_names": [],
         "round_number": 0,
@@ -255,6 +256,7 @@ def render_round():
 
 def resetgame():
     st.session_state['started'] = False
+    st.session_state['start_clicked'] = False
     st.session_state['human_name'] = ""
     st.session_state['ai_names'] = []
     st.session_state['ai_personalities'] = []
@@ -420,6 +422,7 @@ def start_game():
         st.warning("GITHUB_TOKEN not set AI responses may fail. Set GITHUB_TOKEN in your environment.")
     if not st.session_state['started']:
         if st.button("Start the game"):
+            st.session_state['start_clicked'] = True
             st.session_state['started'] = True
             st.session_state['human_name'] = rd.choice(random_names)
             st.session_state['ai_names'] = rd.sample(
