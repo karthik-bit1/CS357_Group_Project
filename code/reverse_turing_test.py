@@ -384,10 +384,18 @@ def ai_vote(question, all_answers, voter_name, voter_personality):
 
     answers_text = "\n".join([f"{a['name']}: {a['response']}" for a in all_answers])
     prompt = (
-        f"You are {voter_name}. Your personality is: {voter_personality}. "
-        f"You are playing a social deduction game. The question asked was: '{question}'\n"
-        f"Here are all the player answers:\n{answers_text}\n"
-        "Which player do you think is the human? Reply with ONLY their name, nothing else."
+        f"You are {voter_name}. Your personality is: {voter_personality}.\n"
+        "You are playing a social deduction game.\n\n"
+        f"Question asked: '{question}'\n\n"
+        "Player answers:\n"
+        f"{answers_text}\n\n"
+        "Your task:\n"
+        "1.Compare all answers carefully.\n"
+        "2.Humans tend to be slightly inconsistent, emotional, vague, or imperfect.\n"
+        "3.AI answers tend to be overly structured, neutral, or too polished.\n"
+        f"4. As a {voter_personality}, your judgment style should reflect your personality.\n\n"
+        "Think silently, then choose the player most likely to be human.\n"
+        "Reply with ONLY the player's name."
     )
     client = ChatCompletionsClient(endpoint=endpoint, credential=AzureKeyCredential(token))
     try:
