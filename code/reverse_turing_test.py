@@ -424,7 +424,7 @@ def start_game():
         if st.button("Start the game"):
             st.session_state['start_game'] = True
             st.rerun()
-    elif st.session_state['starting_game'] and not st.session_state['started']
+    elif st.session_state['starting_game'] and not st.session_state['started']:
         st.info("Setting up players and generating the first round.")
         with st.spinner("starting game..."):
             st.session_state['started'] = True
