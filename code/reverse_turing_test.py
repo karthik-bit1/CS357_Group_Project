@@ -389,19 +389,38 @@ async def ai_vote_async(client,question,all_answers, voter_name, voter_personali
 
     answers_text = "\n".join([f"{a['name']}: {a['response']}" for a in all_answers])
     prompt = (
-        f"You are {voter_name}. Your personality is: {voter_personality}.\n"
-        "You are playing a social deduction game.\n\n"
-        f"Question asked: '{question}'\n\n"
-        "Player answers:\n"
-        f"{answers_text}\n\n"
-        "Your task:\n"
-        "1.Compare all answers carefully.\n"
-        "2.Humans tend to be slightly inconsistent, emotional, vague, or imperfect.\n"
-        "3.AI answers tend to be overly structured, neutral, or too polished.\n"
-        f"4. As a {voter_personality}, your judgment style should reflect your personality.\n\n"
-        "Think silently, then choose the player most likely to be human.\n"
-        "Reply with ONLY the player's name."
+        f""" You are {voter_name}. Personality: {voter_personality}.
+
+            This is a social deduction game.
+            Exactly one player is human. Everyone else is AI.
+
+            Question:
+            '{question}'
+
+            Player Answers:
+            {answers_text}
+
+            Analyze silently using these clues:
+
+            1. Directness: Did the player actually answer the question, or avoid it?
+            
+            2. Naturalness: Does the answer feel naturally human, or artificially generated?
+
+            3. Disguise attempts:Humans may pretend to be AI by being overly formal, robotic, random, vague, or emotionless.
+            Do not be fooled by obvious acting.
+
+            4. Manipulation: Be suspicious of answers that seem designed to trick voters rather than answer normally.
+
+            5. Relative comparison: Compare all answers. Pick the answer that feels most like a real person behind it.
+
+            6. Personality lens: As {voter_personality}, let your voting style affect how suspicious or forgiving you are.
+
+            Think silently and vote for the most likely human.
+
+            Output only the exact player name.
+        """
     )
+    
     try:
         completion = await client.complete(
             messages=[SystemMessage(prompt), UserMessage("Who is the human?")],
