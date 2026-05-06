@@ -1,19 +1,21 @@
 import os
+import asyncio
 import streamlit as st
 import random as rd
-from azure.ai.inference import ChatCompletionsClient
+from azure.ai.inference.aio import ChatCompletionsClient
 from azure.ai.inference.models import SystemMessage, UserMessage
 from azure.core.credentials import AzureKeyCredential
 from azure.core.exceptions import AzureError
 from dotenv import load_dotenv
 
 endpoint = "https://models.github.ai/inference"
-PRIMARY_MODEL = "openai/gpt-4o-mini"
-SECONDARY_MODEL = "openai/gpt-4o-mini"
-MAX_ROUNDS = 3
-
 load_dotenv()
-token = os.getenv("GITHUB_TOKEN")
+token = os.environ["GITHUB_TOKEN"]
+PRIMARY_MODEL = "openai/gpt-4.1"
+SECONDARY_MODEL = "openai/gpt-4.1"
+MAX_ROUNDS = 3
+loop = asyncio.new_event_loop()
+asyncio.set_event_loop(loop)
 
 random_names = [
     "Charley", "Brick", "Goku", "Tim", "Penelope", "Grace", "Definitely Not AI",
@@ -179,46 +181,49 @@ def build_messages(name, personality, question):
     )
     return [SystemMessage(system_prompt), UserMessage(question)]
 
-def responseAI(names, personalities, question):
-    models = [PRIMARY_MODEL, SECONDARY_MODEL, PRIMARY_MODEL, SECONDARY_MODEL]
 
-    if not token:
-        return [
-            {
-                "name": name,
-                "response": "I am having trouble responding right now.",
-                "personality": personality,
-                "model": model_name,
-            }
-            for name, personality, model_name in zip(names, personalities, models)
-        ]
-
-    client = ChatCompletionsClient(
-        endpoint=endpoint,
-        credential=AzureKeyCredential(token),
-    )
-
-    ai_answers = []
-    for name, personality, model_name in zip(names, personalities, models):
-        try:
-            completion = client.complete(
-                messages=build_messages(name, personality, question),
-                temperature=1.0,
-                max_tokens=100,
-                model=model_name,
-            )
-            response_text = completion.choices[0].message.content
-            if not isinstance(response_text, str):
-                response_text = str(response_text)
-        except AzureError:
-            response_text = "I am having trouble responding right now."
-        ai_answers.append({
-            "name": name,
+async def get_response_async(client, name, personality, question, model_name):
+    try:
+        completion = await client.complete(
+            messages=build_messages(name, personality, question),
+            temperature=1.0,
+            max_tokens=50,
+            model=model_name,
+        )
+        response_text = completion.choices[0].message.content
+        if not isinstance(response_text, str):
+            response_text = str(response_text)
+            
+    except Exception:
+        response_text = "I am having trouble responding right now."
+    
+    return{"name": name,
             "response": response_text,
             "personality": personality,
             "model": model_name
-        })
+        }
+
+async def responseAI_async(names, personalities, question):
+    models = [PRIMARY_MODEL, SECONDARY_MODEL, PRIMARY_MODEL, SECONDARY_MODEL]
+    ai_responses=[]
+    
+    client=ChatCompletionsClient(
+        endpoint=endpoint,
+        credential=AzureKeyCredential(token),
+    )
+    for name, personality, model_name in zip(names, personalities, models):
+        ai_response=get_response_async(client, name, personality, question, model_name)
+        
+        ai_responses.append(ai_response)
+    ai_answers= await asyncio.gather(*ai_responses)
     return ai_answers
+
+    
+
+def responseAI(names, personalities, question):
+       return loop.run_until_complete(
+           responseAI_async(names,personalities,question)
+        )
 
 def save_current_round():
     st.session_state.history.append({
@@ -377,7 +382,7 @@ def tally_votes(human_vote, all_answers):
     eliminated = max(votes, key=votes.get)
     return eliminated, votes
 
-def ai_vote(question, all_answers, voter_name, voter_personality):
+async def ai_vote_async(client,question,all_answers, voter_name, voter_personality):
     """Ask an AI to look at all answers and guess who the human is."""
     if not token:
         return rd.choice([a["name"] for a in all_answers])
@@ -397,9 +402,8 @@ def ai_vote(question, all_answers, voter_name, voter_personality):
         "Think silently, then choose the player most likely to be human.\n"
         "Reply with ONLY the player's name."
     )
-    client = ChatCompletionsClient(endpoint=endpoint, credential=AzureKeyCredential(token))
     try:
-        completion = client.complete(
+        completion = await client.complete(
             messages=[SystemMessage(prompt), UserMessage("Who is the human?")],
             temperature=0.7,
             max_tokens=10,
@@ -408,8 +412,25 @@ def ai_vote(question, all_answers, voter_name, voter_personality):
         return completion.choices[0].message.content.strip()
     except AzureError:
         return rd.choice([a["name"] for a in all_answers])
-
-
+    
+async def ai_votes_async(question, all_answers, voter_name, voter_personality):
+    client=ChatCompletionsClient(
+        endpoint=endpoint,
+        credential=AzureKeyCredential(token),
+    )
+    
+    try:
+        return await ai_vote_async(
+            client,
+            question,
+            all_answers,
+            voter_name,
+            voter_personality
+        )
+    finally:
+        await client.close()
+def ai_vote(question, all_answers, voter_name, voter_personality):
+    return loop.run_until_complete(ai_votes_async(question, all_answers, voter_name, voter_personality))
 def show_result():
     eliminated = st.session_state['vote_result']
     votes = st.session_state['votes']
