@@ -11,11 +11,14 @@ from dotenv import load_dotenv
 endpoint = "https://models.github.ai/inference"
 load_dotenv()
 token = os.getenv("GITHUB_TOKEN")
-PRIMARY_MODEL = "openai/gpt-4.1"
-SECONDARY_MODEL = "openai/gpt-4.1"
+PRIMARY_MODEL = "openai/gpt-4o-mini"
 MAX_ROUNDS = 3
 loop = asyncio.new_event_loop()
 asyncio.set_event_loop(loop)
+client = ChatCompletionsClient(
+    endpoint=endpoint,
+    credential=AzureKeyCredential(token),
+)
 
 random_names = [
     "Charley", "Brick", "Goku", "Tim", "Penelope", "Grace", "Definitely Not AI",
@@ -170,7 +173,7 @@ def humanplayer():
 
     elif st.session_state.phase == "result":
         show_result()
-
+        
 def build_messages(name, personality, question):
     system_prompt = (
         f"Your name is {name}. "
@@ -204,13 +207,9 @@ async def get_response_async(client, name, personality, question, model_name):
         }
 
 async def responseAI_async(names, personalities, question):
-    models = [PRIMARY_MODEL, SECONDARY_MODEL, PRIMARY_MODEL, SECONDARY_MODEL]
+    models = [PRIMARY_MODEL, PRIMARY_MODEL, PRIMARY_MODEL, PRIMARY_MODEL]
     ai_responses=[]
-    
-    client=ChatCompletionsClient(
-        endpoint=endpoint,
-        credential=AzureKeyCredential(token),
-    )
+
     for name, personality, model_name in zip(names, personalities, models):
         ai_response=get_response_async(client, name, personality, question, model_name)
         
@@ -433,11 +432,6 @@ async def ai_vote_async(client,question,all_answers, voter_name, voter_personali
         return rd.choice([a["name"] for a in all_answers])
     
 async def ai_votes_async(question, all_answers, voter_name, voter_personality):
-    client=ChatCompletionsClient(
-        endpoint=endpoint,
-        credential=AzureKeyCredential(token),
-    )
-    
     try:
         return await ai_vote_async(
             client,
