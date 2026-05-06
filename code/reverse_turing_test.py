@@ -383,42 +383,43 @@ def tally_votes(human_vote, all_answers):
 
 async def ai_vote_async(client,question,all_answers, voter_name, voter_personality):
     """Ask an AI to look at all answers and guess who the human is."""
-    if not token:
-        return rd.choice([a["name"] for a in all_answers])
+    
+    
+    player_names = ", ".join([a["name"] for a in all_answers])
 
     answers_text = "\n".join([f"{a['name']}: {a['response']}" for a in all_answers])
-    prompt = (
-        f""" You are {voter_name}. Personality: {voter_personality}.
+    prompt = f"""
+        You are {voter_name}. Your personality is {voter_personality}.
 
-            This is a social deduction game.
-            Exactly one player is human. Everyone else is AI.
+        You are voting in a game.
+        Exactly ONE player is human.
+        Every answer may be deceptive.
 
-            Question:
-            '{question}'
+        Question:
+        {question}
 
-            Player Answers:
-            {answers_text}
+        Player answers:
+        {answers_text}
 
-            Analyze silently using these clues:
+        Your job:
+        Pick the answer that seems most likely written by a real human.
 
-            1. Directness: Did the player actually answer the question, or avoid it?
-            
-            2. Naturalness: Does the answer feel naturally human, or artificially generated?
+        Important:
+            - Random text can be a human trying to hide.
+            - Robotic text can be a human pretending to be AI.
+            - Perfect text can be AI.
+            - Bad grammar alone does not prove human.
+            - Do not explain your reasoning.
+            - You must choose one name from the player list.
 
-            3. Disguise attempts:Humans may pretend to be AI by being overly formal, robotic, random, vague, or emotionless.
-            Do not be fooled by obvious acting.
+        Player names:
+        {player_names}
 
-            4. Manipulation: Be suspicious of answers that seem designed to trick voters rather than answer normally.
+        Voting rule:
+        Choose the player whose answer feels most intentional, self-protective, emotional, awkward, or strategically fake.
 
-            5. Relative comparison: Compare all answers. Pick the answer that feels most like a real person behind it.
-
-            6. Personality lens: As {voter_personality}, let your voting style affect how suspicious or forgiving you are.
-
-            Think silently and vote for the most likely human.
-
-            Output only the exact player name.
-        """
-    )
+        Return ONLY one exact player name.
+    """
     
     try:
         completion = await client.complete(
