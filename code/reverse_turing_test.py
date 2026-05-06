@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 
 endpoint = "https://models.github.ai/inference"
 load_dotenv()
-token = os.environ["GITHUB_TOKEN"]
+token = os.getenv("GITHUB_TOKEN")
 PRIMARY_MODEL = "openai/gpt-4.1"
 SECONDARY_MODEL = "openai/gpt-4.1"
 MAX_ROUNDS = 3
