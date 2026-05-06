@@ -432,16 +432,14 @@ async def ai_vote_async(client,question,all_answers, voter_name, voter_personali
         return rd.choice([a["name"] for a in all_answers])
     
 async def ai_votes_async(question, all_answers, voter_name, voter_personality):
-    try:
-        return await ai_vote_async(
+    
+    return await ai_vote_async(
             client,
             question,
             all_answers,
             voter_name,
             voter_personality
-        )
-    finally:
-        await client.close()
+    )
 def ai_vote(question, all_answers, voter_name, voter_personality):
     return loop.run_until_complete(ai_votes_async(question, all_answers, voter_name, voter_personality))
 def show_result():
