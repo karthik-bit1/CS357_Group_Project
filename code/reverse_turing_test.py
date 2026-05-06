@@ -15,10 +15,7 @@ PRIMARY_MODEL = "openai/gpt-4o-mini"
 MAX_ROUNDS = 3
 loop = asyncio.new_event_loop()
 asyncio.set_event_loop(loop)
-client = ChatCompletionsClient(
-    endpoint=endpoint,
-    credential=AzureKeyCredential(token),
-)
+
 
 random_names = [
     "Charley", "Brick", "Goku", "Tim", "Penelope", "Grace", "Definitely Not AI",
@@ -209,14 +206,20 @@ async def get_response_async(client, name, personality, question, model_name):
 async def responseAI_async(names, personalities, question):
     models = [PRIMARY_MODEL, PRIMARY_MODEL, PRIMARY_MODEL, PRIMARY_MODEL]
     ai_responses=[]
-
-    for name, personality, model_name in zip(names, personalities, models):
-        ai_response=get_response_async(client, name, personality, question, model_name)
+    
+    client = ChatCompletionsClient(
+    endpoint=endpoint,
+    credential=AzureKeyCredential(token),
+    )   
+    try:
+        for name, personality, model_name in zip(names, personalities, models):
+            ai_response=get_response_async(client, name, personality, question, model_name)
         
-        ai_responses.append(ai_response)
-    ai_answers= await asyncio.gather(*ai_responses)
-    return ai_answers
-
+            ai_responses.append(ai_response)
+        ai_answers= await asyncio.gather(*ai_responses)
+        return ai_answers
+    finally:        
+        await client.close()
     
 
 def responseAI(names, personalities, question):
@@ -461,14 +464,21 @@ async def ai_vote_async(client,question,all_answers, voter_name, voter_personali
         return rd.choice([a["name"] for a in all_answers])
     
 async def ai_votes_async(question, all_answers, voter_name, voter_personality):
-    
-    return await ai_vote_async(
+    client = ChatCompletionsClient(
+    endpoint=endpoint,
+    credential=AzureKeyCredential(token),
+    )
+    try:
+        return await ai_vote_async(
             client,
             question,
             all_answers,
             voter_name,
             voter_personality
-    )
+        )
+    finally:
+        await client.close()
+    
 def ai_vote(question, all_answers, voter_name, voter_personality):
     return loop.run_until_complete(ai_votes_async(question, all_answers, voter_name, voter_personality))
 def show_result():
