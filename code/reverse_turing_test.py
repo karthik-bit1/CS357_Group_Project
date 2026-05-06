@@ -391,10 +391,37 @@ async def ai_vote_async(client,question,all_answers, voter_name, voter_personali
     prompt = f"""
         You are {voter_name}. Your personality is {voter_personality}.
 
-        You are voting in a game.
-        Exactly ONE player is human.
-        Every answer may be deceptive.
+        This is a social deduction game.
+        Exactly one player is human.
 
+        Question:
+        What would you do on a rainy weekend?
+
+        Example 1:
+        Alice: "I enjoy reading books quietly indoors."
+        Bob: "RAIN RAIN ERROR 404 HUMAN DETECTED"
+        Charlie: "I would probably cook something warm and watch movies."
+
+        Most suspicious player: Bob
+        Reason: Random nonsense is often a human trying too hard to avoid detection.
+
+        Example 2:
+        Alice: "As an AI language model, I enjoy efficient productivity tasks."
+        Bob: "I usually sleep late and waste the whole Saturday honestly."
+        Charlie: "Rainy weekends are optimal for indoor recreational activity."
+
+        Most suspicious player: Alice
+        Reason: Overly fake robotic behavior may be a human pretending to be AI.
+        
+        Example 3:
+        Alice: "I like to go hiking in the rain, it feels refreshing."
+        Bob: "I would probably just stay inside and watch movies."
+        Charlie: "wdkjcwodiih"
+        Most suspicious player: Charlie
+        Reason: Random nonsense is often a human trying too hard to avoid detection.
+
+        Now analyze the real game.
+        
         Question:
         {question}
 
@@ -417,6 +444,7 @@ async def ai_vote_async(client,question,all_answers, voter_name, voter_personali
 
         Voting rule:
         Choose the player whose answer feels most intentional, self-protective, emotional, awkward, or strategically fake.
+        Be suspicious of players whose style changes a lot between rounds.
 
         Return ONLY one exact player name.
     """
