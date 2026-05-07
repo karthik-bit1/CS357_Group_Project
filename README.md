@@ -16,26 +16,26 @@ We believe that, with the human having to learn to replicate the AI's writing or
 
 Link to the project proposal: 
 
-https://karthik-bit1.github.io/Group_Project/Proposal/Update_Software_Project_Proposal%20.pdf
+<https://karthik-bit1.github.io/Group_Project/Proposal/Update_Software_Project_Proposal%20.pdf>
 
 ## Project Requirements
 
 Link to the project requirements:
 
-https://karthik-bit1.github.io/Group_Project/Proposal/Requirements/
+<https://karthik-bit1.github.io/Group_Project/Proposal/Requirements/>
 
 ## Project Design
 
 Link to the project design:
 
-https://karthik-bit1.github.io/Group_Project/Proposal/Design_Report/
+<https://karthik-bit1.github.io/Group_Project/Proposal/Design_Report/>
 
 ## Project Test Plan, CI Automation
 
 - Link to project test plan:
 
-https://github.com/karthik-bit1/Group_Project/tree/main/tests
+<https://github.com/karthik-bit1/Group_Project/tree/main/tests>
 
 - Link to CI automation (github actions workflow):
 
-https://github.com/karthik-bit1/Group_Project/tree/main/.github/workflows
+<https://github.com/karthik-bit1/Group_Project/tree/main/.github/workflows>
