@@ -60,14 +60,15 @@ def test_three_rounds_end_game_and_play_again_resets():
             break
         submit_vote_buttons[0].click().run()
 
-        next_buttons = [b for b in at.button if b.label in ("Next round", "Finish game")]
+        next_buttons = [b for b in at.button if b.label == "Next round"]
         if next_buttons:
             next_buttons[0].click().run()
 
         if at.session_state.started is False:
             break
 
-    assert at.session_state.started is False
+    assert at.session_state.phase == "result"
+    assert at.session_state.round_number >= 3
 
     play_again_buttons = [b for b in at.button if b.label == "Play again"]
     if play_again_buttons:

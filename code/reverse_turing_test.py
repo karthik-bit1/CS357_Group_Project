@@ -1,19 +1,21 @@
 import os
+import asyncio
 import streamlit as st
 import random as rd
-from azure.ai.inference import ChatCompletionsClient
+from azure.ai.inference.aio import ChatCompletionsClient
 from azure.ai.inference.models import SystemMessage, UserMessage
 from azure.core.credentials import AzureKeyCredential
 from azure.core.exceptions import AzureError
 from dotenv import load_dotenv
 
 endpoint = "https://models.github.ai/inference"
-PRIMARY_MODEL = "openai/gpt-4.1"
-SECONDARY_MODEL = "meta/Llama-3.2-90B-Vision-Instruct"
-MAX_ROUNDS = 3
-
 load_dotenv()
 token = os.getenv("GITHUB_TOKEN")
+PRIMARY_MODEL = "openai/gpt-4o-mini"
+MAX_ROUNDS = 3
+loop = asyncio.new_event_loop()
+asyncio.set_event_loop(loop)
+
 
 random_names = [
     "Charley", "Brick", "Goku", "Tim", "Penelope", "Grace", "Definitely Not AI",
@@ -136,7 +138,7 @@ def get_next_question():
     return question
   
 def hintload():
-    round_num = st.session_state.round_number
+    round_num = st.session_state['round_number']
     if round_num > 3:
         return
  
@@ -168,7 +170,7 @@ def humanplayer():
 
     elif st.session_state.phase == "result":
         show_result()
-
+        
 def build_messages(name, personality, question):
     system_prompt = (
         f"Your name is {name}. "
@@ -179,46 +181,51 @@ def build_messages(name, personality, question):
     )
     return [SystemMessage(system_prompt), UserMessage(question)]
 
-def responseAI(names, personalities, question):
-    models = [PRIMARY_MODEL, SECONDARY_MODEL, PRIMARY_MODEL, SECONDARY_MODEL]
 
-    if not token:
-        return [
-            {
-                "name": name,
-                "response": "I am having trouble responding right now.",
-                "personality": personality,
-                "model": model_name,
-            }
-            for name, personality, model_name in zip(names, personalities, models)
-        ]
-
-    client = ChatCompletionsClient(
-        endpoint=endpoint,
-        credential=AzureKeyCredential(token),
-    )
-
-    ai_answers = []
-    for name, personality, model_name in zip(names, personalities, models):
-        try:
-            completion = client.complete(
-                messages=build_messages(name, personality, question),
-                temperature=1.0,
-                max_tokens=100,
-                model=model_name,
-            )
-            response_text = completion.choices[0].message.content
-            if not isinstance(response_text, str):
-                response_text = str(response_text)
-        except AzureError:
-            response_text = "I am having trouble responding right now."
-        ai_answers.append({
-            "name": name,
+async def get_response_async(client, name, personality, question, model_name):
+    try:
+        completion = await client.complete(
+            messages=build_messages(name, personality, question),
+            temperature=1.0,
+            max_tokens=50,
+            model=model_name,
+        )
+        response_text = completion.choices[0].message.content
+        if not isinstance(response_text, str):
+            response_text = str(response_text)
+            
+    except Exception:
+        response_text = "I am having trouble responding right now."
+    
+    return{"name": name,
             "response": response_text,
             "personality": personality,
             "model": model_name
-        })
-    return ai_answers
+        }
+
+async def responseAI_async(names, personalities, question):
+    models = [PRIMARY_MODEL, PRIMARY_MODEL, PRIMARY_MODEL, PRIMARY_MODEL]
+    ai_responses=[]
+    
+    client = ChatCompletionsClient(
+    endpoint=endpoint,
+    credential=AzureKeyCredential(token),
+    )   
+    try:
+        for name, personality, model_name in zip(names, personalities, models):
+            ai_response=get_response_async(client, name, personality, question, model_name)
+        
+            ai_responses.append(ai_response)
+        ai_answers= await asyncio.gather(*ai_responses)
+        return ai_answers
+    finally:        
+        await client.close()
+    
+
+def responseAI(names, personalities, question):
+       return loop.run_until_complete(
+           responseAI_async(names,personalities,question)
+        )
 
 def save_current_round():
     st.session_state.history.append({
@@ -377,21 +384,76 @@ def tally_votes(human_vote, all_answers):
     eliminated = max(votes, key=votes.get)
     return eliminated, votes
 
-def ai_vote(question, all_answers, voter_name, voter_personality):
+async def ai_vote_async(client,question,all_answers, voter_name, voter_personality):
     """Ask an AI to look at all answers and guess who the human is."""
-    if not token:
-        return rd.choice([a["name"] for a in all_answers])
+    
+    
+    player_names = ", ".join([a["name"] for a in all_answers])
 
     answers_text = "\n".join([f"{a['name']}: {a['response']}" for a in all_answers])
-    prompt = (
-        f"You are {voter_name}. Your personality is: {voter_personality}. "
-        f"You are playing a social deduction game. The question asked was: '{question}'\n"
-        f"Here are all the player answers:\n{answers_text}\n"
-        "Which player do you think is the human? Reply with ONLY their name, nothing else."
-    )
-    client = ChatCompletionsClient(endpoint=endpoint, credential=AzureKeyCredential(token))
+    prompt = f"""
+        You are {voter_name}. Your personality is {voter_personality}.
+
+        This is a social deduction game.
+        Exactly one player is human.
+
+        Question:
+        What would you do on a rainy weekend?
+
+        Example 1:
+        Alice: "I enjoy reading books quietly indoors."
+        Bob: "RAIN RAIN ERROR 404 HUMAN DETECTED"
+        Charlie: "I would probably cook something warm and watch movies."
+
+        Most suspicious player: Bob
+        Reason: Random nonsense is often a human trying too hard to avoid detection.
+
+        Example 2:
+        Alice: "As an AI language model, I enjoy efficient productivity tasks."
+        Bob: "I usually sleep late and waste the whole Saturday honestly."
+        Charlie: "Rainy weekends are optimal for indoor recreational activity."
+
+        Most suspicious player: Alice
+        Reason: Overly fake robotic behavior may be a human pretending to be AI.
+        
+        Example 3:
+        Alice: "I like to go hiking in the rain, it feels refreshing."
+        Bob: "I would probably just stay inside and watch movies."
+        Charlie: "wdkjcwodiih"
+        Most suspicious player: Charlie
+        Reason: Random nonsense is often a human trying too hard to avoid detection.
+
+        Now analyze the real game.
+        
+        Question:
+        {question}
+
+        Player answers:
+        {answers_text}
+
+        Your job:
+        Pick the answer that seems most likely written by a real human.
+
+        Important:
+            - Random text can be a human trying to hide.
+            - Robotic text can be a human pretending to be AI.
+            - Perfect text can be AI.
+            - Bad grammar alone does not prove human.
+            - Do not explain your reasoning.
+            - You must choose one name from the player list.
+
+        Player names:
+        {player_names}
+
+        Voting rule:
+        Choose the player whose answer feels most intentional, self-protective, emotional, awkward, or strategically fake.
+        Be suspicious of players whose style changes a lot between rounds.
+
+        Return ONLY one exact player name.
+    """
+    
     try:
-        completion = client.complete(
+        completion = await client.complete(
             messages=[SystemMessage(prompt), UserMessage("Who is the human?")],
             temperature=0.7,
             max_tokens=10,
@@ -400,8 +462,25 @@ def ai_vote(question, all_answers, voter_name, voter_personality):
         return completion.choices[0].message.content.strip()
     except AzureError:
         return rd.choice([a["name"] for a in all_answers])
-
-
+    
+async def ai_votes_async(question, all_answers, voter_name, voter_personality):
+    client = ChatCompletionsClient(
+    endpoint=endpoint,
+    credential=AzureKeyCredential(token),
+    )
+    try:
+        return await ai_vote_async(
+            client,
+            question,
+            all_answers,
+            voter_name,
+            voter_personality
+        )
+    finally:
+        await client.close()
+    
+def ai_vote(question, all_answers, voter_name, voter_personality):
+    return loop.run_until_complete(ai_votes_async(question, all_answers, voter_name, voter_personality))
 def show_result():
     eliminated = st.session_state['vote_result']
     votes = st.session_state['votes']
@@ -423,23 +502,19 @@ def show_result():
         if st.button("Play again"):
             resetgame()
             st.rerun()
-    elif st.session_state['round_number'] == MAX_ROUNDS:
-        st.success("All AIs have been eliminated! You win! 🎉")
+    elif st.session_state.round_number >= MAX_ROUNDS:
+        st.success(f"You survived all {MAX_ROUNDS} rounds! You win! 🎉")
         if st.button("Play again"):
             resetgame()
             st.rerun()
     else:
         st.info(f"{len(remaining_ai)} AI(s) remaining.")
-        next_label = "Finish game" if st.session_state['round_number'] >= MAX_ROUNDS else "Next round"
-        if st.button(next_label):
+        if st.button("Next round"):
             save_current_round()
             st.session_state['human_response'] = ""
             st.session_state['clear_human_input'] = True
             st.session_state['phase'] = "answer"
-            if st.session_state['round_number'] < MAX_ROUNDS:
-                generate_round()
-            else:
-                st.session_state['started'] = False
+            generate_round()
             st.rerun()
 
 def start_game():
@@ -455,7 +530,8 @@ def start_game():
             st.session_state['starting_game'] = True
             st.rerun()
     elif st.session_state['starting_game'] and not st.session_state['started']:
-        st.info("Setting up players and generating the first round.")
+        st.subheader("Starting game...")
+        st.write("Setting up players and generating the first round.")
         with st.spinner("starting game..."):
             st.session_state['started'] = True
             st.session_state['human_name'] = rd.choice(random_names)
