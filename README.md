@@ -20,19 +20,19 @@ We believe that, with the human having to learn to replicate the AI's writing or
 
 ## Project Prosposal
 
-Link to the project proposal: 
+- Link to the project proposal: 
 
 <https://karthik-bit1.github.io/Group_Project/Proposal/Update_Software_Project_Proposal%20.pdf>
 
 ## Project Requirements
 
-Link to the project requirements:
+- Link to the project requirements:
 
 <https://karthik-bit1.github.io/Group_Project/Proposal/Requirements/>
 
 ## Project Design
 
-Link to the project design:
+- Link to the project design:
 
 <https://karthik-bit1.github.io/Group_Project/Proposal/Design_Report/>
 
