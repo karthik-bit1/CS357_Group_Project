@@ -12,6 +12,12 @@ If there is only the human and an AI left, the human wins the game.
 The project is designed not only for entertainment purposes but also to inform the human player on the general mannerisms and tropes LLMs use when generating text.
 We believe that, with the human having to learn to replicate the AI's writing or analyze it to find the most "human" of the bunch, this piece of edutainment software will result in them learning such mannerisms.
 
+# Game Interface
+
+- Link for the game:
+
+<https://cs375-groupproject-reverse-turing-game.streamlit.app/>
+
 ## Project Prosposal
 
 Link to the project proposal: 
